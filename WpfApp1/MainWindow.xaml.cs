@@ -20,5 +20,22 @@ namespace WpfApp1
         {
             InitializeComponent();
         }
+        
+        //функция в основном теле программы
+        public void DrawLine(Point2D p1, Point2D p2)
+        {
+            //Создание новой линии
+            Line line = new Line();
+            //Цвет и толщина линии
+            line.Stroke = Brushes.Red;
+            line.StrokeThickness = 3;
+            //Установка координат линии из координат точек Point2D
+            line.X1 = p1.getX();
+            line.Y1 = p1.getY();
+            line.X2 = p2.getX();
+            line.Y2 = p2.getY();
+            //Добавление линии в Canvas
+            Scene.Children.Add(line);
+        }
     }
 }
