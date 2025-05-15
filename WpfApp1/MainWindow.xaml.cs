@@ -16,9 +16,17 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        Triangle tr;
+        Random rnd = new Random();
+
         public MainWindow()
         {
             InitializeComponent();
+            //Создание треугольника со случайными координатами
+            Point2D p1 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            Point2D p2 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            Point2D p3 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            tr = new Triangle(p1, p2, p3);
         }
         
         //функция в основном теле программы
@@ -36,6 +44,20 @@ namespace WpfApp1
             line.Y2 = p2.getY();
             //Добавление линии в Canvas
             Scene.Children.Add(line);
+        }
+
+        public void DrawTriangle(Triangle tr)
+        {
+            //Отрисовка треугольника с помощью функции отрисовки линии
+            DrawLine(tr.getP1(), tr.getP2());
+            DrawLine(tr.getP2(), tr.getP3());
+            DrawLine(tr.getP3(), tr.getP1());
+        }
+
+        public void ClearScene()
+        {
+            //Очистка Canvas от всех объектов
+            Scene.Children.Clear();
         }
     }
 }
