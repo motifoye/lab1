@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Canvas x:Name="Scene" HorizontalAlignment="Left" VerticalAlignment="Center" Width="680"/>
+        <Canvas 
+                x:Name="Scene" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Center" 
+                Width="680"
+                Height="450"/>
     </Grid>
 </Window>
