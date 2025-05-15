@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfApp1
 {
-    internal class Triangle
+    public class Triangle
     {
         //Атрибуты класса
         private Point2D p1;
