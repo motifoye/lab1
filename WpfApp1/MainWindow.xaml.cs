@@ -22,11 +22,6 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            //Создание треугольника со случайными координатами
-            Point2D p1 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
-            Point2D p2 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
-            Point2D p3 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
-            tr = new Triangle(p1, p2, p3);
         }
         
         //функция в основном теле программы
@@ -54,10 +49,28 @@ namespace WpfApp1
             DrawLine(tr.getP3(), tr.getP1());
         }
 
-        public void ClearScene()
+        // events
+
+        public void DrawTriangleEv(object s, RoutedEventArgs e)
+        {
+
+            //Создание треугольника со случайными координатами
+            Point2D p1 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            Point2D p2 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            Point2D p3 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            tr = new Triangle(p1, p2, p3);
+            DrawTriangle(tr);
+        }
+
+        public void ClearScene(object sender, RoutedEventArgs e)
         {
             //Очистка Canvas от всех объектов
             Scene.Children.Clear();
+        }
+
+        public void AddXT(object s, RoutedEventArgs e)
+        {
+            tr.addX(10);
         }
     }
 }

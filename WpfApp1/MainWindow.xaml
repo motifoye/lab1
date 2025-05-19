@@ -5,13 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800"
+        ResizeMode="NoResize">
     <Grid>
-        <Canvas 
-                x:Name="Scene" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Center" 
-                Width="680"
-                Height="450"/>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Button Click="ClearScene">Clear</Button>
+                <Button Click="DrawTriangleEv">DrawTriangle</Button>
+            </StackPanel>
+            <!--<StackPanel Orientation="Horizontal">
+                <Button Click="AddXT">AddXT</Button>
+            </StackPanel>-->
+            <!--<Label Content="X"/>-->
+            <!--<Slider x:Name="SliderX" Minimum="0" Maximum="700" Value="0" />-->
+        </StackPanel>
+        <Canvas x:Name="Scene" Width="700" Height="400" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
