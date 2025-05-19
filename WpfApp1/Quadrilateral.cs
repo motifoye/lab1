@@ -9,17 +9,32 @@ namespace WpfApp1
     public class Quadrilateral
     {
         //Атрибуты класса
-        private Point2D p1;
-        private Point2D p2;
-        private Point2D p3;
-        private Point2D p4;
+        private Point2D p;
+        private int w;
+        private int h;
+
         //Конструктор класса
-        public Quadrilateral(Point2D p1, Point2D p2, Point2D p3, Point2D p4)
+        public Quadrilateral(Point2D p, int w, int h)
         {
-            this.p1 = p1;
-            this.p2 = p2;
-            this.p3 = p3;
-            this.p4 = p4;
+            this.p = p;
+            this.w = w;
+            this.h = h;
+        }
+        public Point2D getP1()
+        {
+            return p;
+        }
+        public Point2D getP2()
+        {
+            return new Point2D(p.getX() + w, p.getY());
+        }
+        public Point2D getP3()
+        {
+            return new Point2D(p.getX() + w, p.getY() + h);
+        }
+        public Point2D getP4()
+        {
+            return new Point2D(p.getX(), p.getY() + h);
         }
     }
 }

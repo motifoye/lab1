@@ -7,17 +7,28 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800"
         ResizeMode="NoResize">
-    <Grid>
+    <Grid Margin="10">
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <Button Click="ClearScene">Clear</Button>
-                <Button Click="DrawTriangleEv">DrawTriangle</Button>
+                <Button Click="ClearScene" Padding="10">Clear</Button>
+                <Button Click="DrawTriangleEv" Padding="10">DrawTriangle</Button>
+                <Button Click="DrawQuadrilateralEv" Padding="10">DrawQuadrilateral</Button>
             </StackPanel>
-            <!--<StackPanel Orientation="Horizontal">
-                <Button Click="AddXT">AddXT</Button>
-            </StackPanel>-->
-            <!--<Label Content="X"/>-->
-            <!--<Slider x:Name="SliderX" Minimum="0" Maximum="700" Value="0" />-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Width"/>
+                <Slider Grid.Row="1" x:Name="SliderX" Minimum="0" Maximum="700" Value="0"/>
+                <TextBlock Text="Height" Grid.Column="1"/>
+                <Slider Grid.Row="1" Grid.Column="1" x:Name="SliderY" Minimum="0" Maximum="400" Value="0"/>
+            </Grid>
         </StackPanel>
         <Canvas x:Name="Scene" Width="700" Height="400" VerticalAlignment="Bottom"/>
     </Grid>

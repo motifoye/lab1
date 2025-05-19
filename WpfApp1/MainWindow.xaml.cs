@@ -49,17 +49,32 @@ namespace WpfApp1
             DrawLine(tr.getP3(), tr.getP1());
         }
 
+        public void DrawQuadrilateral(Quadrilateral qu)
+        {
+            DrawLine(qu.getP1(), qu.getP2());
+            DrawLine(qu.getP2(), qu.getP3());
+            DrawLine(qu.getP3(), qu.getP4());
+            DrawLine(qu.getP4(), qu.getP1());
+        }
+
         // events
 
         public void DrawTriangleEv(object s, RoutedEventArgs e)
         {
-
             //Создание треугольника со случайными координатами
             Point2D p1 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
             Point2D p2 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
             Point2D p3 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
             tr = new Triangle(p1, p2, p3);
             DrawTriangle(tr);
+        }
+        public void DrawQuadrilateralEv(object s, RoutedEventArgs e)
+        {
+            int w = (int)SliderX.Value;
+            int h = (int)SliderY.Value;
+            Point2D p = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            Quadrilateral qu = new Quadrilateral(p, w, h);
+            DrawQuadrilateral(qu);
         }
 
         public void ClearScene(object sender, RoutedEventArgs e)
