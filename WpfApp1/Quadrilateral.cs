@@ -20,18 +20,22 @@ namespace WpfApp1
             this.w = w;
             this.h = h;
         }
+        // Точка слева сверху
         public Point2D getP1()
         {
             return p;
         }
+        // Точка справа сверху
         public Point2D getP2()
         {
             return new Point2D(p.getX() + w, p.getY());
         }
+        // Точка справа снизу
         public Point2D getP3()
         {
             return new Point2D(p.getX() + w, p.getY() + h);
         }
+        // Точка слева снизу
         public Point2D getP4()
         {
             return new Point2D(p.getX(), p.getY() + h);
