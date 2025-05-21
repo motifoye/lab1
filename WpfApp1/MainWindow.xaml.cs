@@ -16,7 +16,6 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        Triangle tr;
         Random rnd = new Random();
 
         public MainWindow()
@@ -28,15 +27,17 @@ namespace WpfApp1
         public void DrawLine(Point2D p1, Point2D p2)
         {
             //Создание новой линии
-            Line line = new Line();
-            //Цвет и толщина линии
-            line.Stroke = Brushes.Red;
-            line.StrokeThickness = 3;
-            //Установка координат линии из координат точек Point2D
-            line.X1 = p1.getX();
-            line.Y1 = p1.getY();
-            line.X2 = p2.getX();
-            line.Y2 = p2.getY();
+            Line line = new()
+            {
+                //Цвет и толщина линии
+                Stroke = Brushes.Red,
+                StrokeThickness = 3,
+                //Установка координат линии из координат точек Point2D
+                X1 = p1.getX(),
+                Y1 = p1.getY(),
+                X2 = p2.getX(),
+                Y2 = p2.getY()
+            };
             //Добавление линии в Canvas
             Scene.Children.Add(line);
         }
@@ -62,18 +63,18 @@ namespace WpfApp1
         public void DrawTriangleEv(object s, RoutedEventArgs e)
         {
             //Создание треугольника со случайными координатами
-            Point2D p1 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
-            Point2D p2 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
-            Point2D p3 = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
-            tr = new Triangle(p1, p2, p3);
+            Point2D p1 = new(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            Point2D p2 = new(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            Point2D p3 = new(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            Triangle tr = new(p1, p2, p3);
             DrawTriangle(tr);
         }
         public void DrawQuadrilateralEv(object s, RoutedEventArgs e)
         {
             int w = (int)SliderX.Value;
             int h = (int)SliderY.Value;
-            Point2D p = new Point2D(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
-            Quadrilateral qu = new Quadrilateral(p, w, h);
+            Point2D p = new(rnd.Next(0, (int)Scene.Width), rnd.Next(0, (int)Scene.Height));
+            Quadrilateral qu = new(p, w, h);
             DrawQuadrilateral(qu);
         }
 
@@ -81,11 +82,6 @@ namespace WpfApp1
         {
             //Очистка Canvas от всех объектов
             Scene.Children.Clear();
-        }
-
-        public void AddXT(object s, RoutedEventArgs e)
-        {
-            tr.addX(10);
         }
     }
 }
