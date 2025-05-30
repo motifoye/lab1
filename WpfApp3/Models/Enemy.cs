@@ -12,7 +12,7 @@ namespace WpfApp3.Models
         public string Name { get; private set; }
         public BigNumber HitPoints { get; private set; }
         public BigNumber Gold { get; private set; }
-        public string IconPath { get; private set; }
+        public string IconName { get; private set; }
 
         // Конструктор создания противника из шаблона
         public CEnemy(Enemy template)
@@ -30,7 +30,7 @@ namespace WpfApp3.Models
             Gold = new BigNumber((baseGold * goldModifier).ToString());
 
             // Иконка - путь к изображению
-            IconPath = template.IconName();
+            IconName = template.IconName();
         }
 
         // Метод для нанесения урона (пример)

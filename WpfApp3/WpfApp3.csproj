@@ -13,4 +13,10 @@
     <ProjectReference Include="..\WpfApp2\WpfApp2.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="empty.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
 </Project>

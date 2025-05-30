@@ -5,8 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp3"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="250" Width="800"
+        ResizeMode="NoResize">
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <UniformGrid Grid.Row="0" Rows="1" VerticalAlignment="Center" Height="30" Margin="5">
+            <TextBlock Text="Enemy name:"/>
+            <TextBox x:Name="EnemyNameTbx" IsEnabled="False" d:Text="text"/>
+        </UniformGrid>
+        <TextBlock Grid.Row="1" Text="Enemy hit point"  VerticalAlignment="Center" Height="30" Margin="5"/>
+        <TextBlock Grid.Row="2" x:Name="EnemyHitsTb" d:Text="text" VerticalAlignment="Center" Height="30" Margin="5"/>
+        <TextBlock Grid.Row="3" Text="Gold from enemy" VerticalAlignment="Center" Height="30" Margin="5"/>
+        <TextBlock Grid.Row="4" x:Name="GoldEnemyTb" d:Text="text" VerticalAlignment="Center" Height="30" Margin="5"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Click to deal damage" VerticalAlignment="Center" Height="30" Margin="5"/>
+        <Image Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" x:Name="EnemyImage" Source="/empty.png" 
+               HorizontalAlignment="Center" VerticalAlignment="Center" Height="120" Width="120"
+               MouseLeftButtonDown="EnemyImage_MouseLeftButtonDown"/>
+        <UniformGrid Grid.Row="4" Grid.Column="1" Rows="1" Margin="5">
+            <Button Content="Repeat"/>
+            <Button Content="Next" IsEnabled="False"/>
+        </UniformGrid>
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Players gold" VerticalAlignment="Center" Height="30" Margin="5"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" x:Name="PlayersGoldTb" d:Text="text" VerticalAlignment="Center" Height="30" Margin="5"/>
+        <TextBlock Grid.Row="3" Grid.Column="2" Text="Players damage" VerticalAlignment="Center" Height="30" Margin="5"/>
+        <TextBlock Grid.Row="4" Grid.Column="2" x:Name="PlayersDamageTb" d:Text="text" VerticalAlignment="Center" Height="30" Margin="5"/>
+        <UniformGrid Grid.Row="0" Grid.Column="3" Rows="1" Margin="5">
+            <TextBlock Text="Level" TextAlignment="Center" Height="30" Margin="5"/>
+            <TextBlock x:Name="LevelTb" d:Text="text" TextAlignment="Left" Height="30" Margin="5"/>
+        </UniformGrid>
+        <Button Grid.Row="3" Grid.Column="3" x:Name="UpgradeBtn" Content="Upgrade" IsEnabled="False" Click="UpgradeBtn_Click" Margin="5"/>
     </Grid>
 </Window>

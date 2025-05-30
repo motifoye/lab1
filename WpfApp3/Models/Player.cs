@@ -27,6 +27,11 @@ namespace WpfApp3.Models
             this.upgradeModifier = upgradeModifier;
         }
 
+        public int GetLevel()
+        {
+            return lvl;
+        }
+
         public BigNumber Gold()
         {
             return gold.getBigNumber();
