@@ -82,5 +82,10 @@ namespace WpfApp2.Models
 
             this.enemies = enemies;
         }
+
+        public IReadOnlyList<Enemy> GetListOfEnemies()
+        {
+            return (IReadOnlyList<Enemy>)enemies;
+        }
     }
 }

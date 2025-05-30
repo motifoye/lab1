@@ -8,79 +8,82 @@ namespace WpfApp3.Models
 {
     public class BigNumber
     {
-        private string number;
+        private int[] number;
+        private const int Base = 10;
 
-        public BigNumber(string number)
+        public BigNumber(string input)
         {
-            if (!IsValidNumber(number))
-                throw new ArgumentException("Invalid number format.");
-
-            this.number = number.TrimStart('0');
-            if (this.number == "") this.number = "0";
-        }
-
-        public override string ToString() => number;
-
-        public static BigNumber operator +(BigNumber a, BigNumber b)
-        {
-            var result = AddStrings(a.number, b.number);
-            return new BigNumber(result);
-        }
-
-        public static BigNumber operator -(BigNumber a, BigNumber b)
-        {
-            bool negative = false;
-            string num1 = a.number;
-            string num2 = b.number;
-
-            if (CompareStrings(num1, num2) < 0)
+            List<int> digits = new();
+            foreach (char c in input.TrimStart('0'))
             {
-                (num1, num2) = (num2, num1);
-                negative = true;
+                if (!char.IsDigit(c))
+                    throw new ArgumentException("Invalid character in number");
+                digits.Add(c - '0');
             }
 
-            var result = SubtractStrings(num1, num2);
-            return new BigNumber((negative ? "-" : "") + result);
+            if (digits.Count == 0) digits.Add(0);
+
+            number = digits.ToArray();
         }
 
-        private static bool IsValidNumber(string str)
+        public string getStringNumber()
         {
-            foreach (char c in str)
-                if (!char.IsDigit(c)) return false;
-            return true;
+            StringBuilder sb = new();
+            foreach (int digit in number)
+                sb.Append(digit);
+            return sb.ToString();
         }
 
-        private static string AddStrings(string a, string b)
+        public override string ToString()
         {
-            StringBuilder result = new StringBuilder();
-            int carry = 0, i = a.Length - 1, j = b.Length - 1;
+            return getStringNumber();
+        }
+
+        public BigNumber getBigNumber()
+        {
+            return new BigNumber(this.getStringNumber());
+        }
+
+        public void Add(BigNumber bnum)
+        {
+            List<int> result = new();
+            int carry = 0;
+
+            int i = number.Length - 1;
+            int j = bnum.number.Length - 1;
 
             while (i >= 0 || j >= 0 || carry > 0)
             {
-                int digitA = i >= 0 ? a[i--] - '0' : 0;
-                int digitB = j >= 0 ? b[j--] - '0' : 0;
-                int sum = digitA + digitB + carry;
-                result.Insert(0, (sum % 10).ToString());
-                carry = sum / 10;
+                int aDigit = i >= 0 ? number[i--] : 0;
+                int bDigit = j >= 0 ? bnum.number[j--] : 0;
+                int sum = aDigit + bDigit + carry;
+                result.Insert(0, sum % Base);
+                carry = sum / Base;
             }
 
-            return result.ToString();
+            number = result.ToArray();
         }
 
-        private static string SubtractStrings(string a, string b)
+        public void Substruct(BigNumber bnum)
         {
-            StringBuilder result = new StringBuilder();
-            int borrow = 0, i = a.Length - 1, j = b.Length - 1;
+            if (CompareTo(bnum) < 0)
+                throw new InvalidOperationException("Subtraction would result in a negative number.");
+
+            List<int> result = new();
+            int borrow = 0;
+
+            int i = number.Length - 1;
+            int j = bnum.number.Length - 1;
 
             while (i >= 0)
             {
-                int digitA = a[i] - '0';
-                int digitB = j >= 0 ? b[j] - '0' : 0;
+                int aDigit = number[i--];
+                int bDigit = j >= 0 ? bnum.number[j--] : 0;
 
-                int diff = digitA - digitB - borrow;
+                int diff = aDigit - bDigit - borrow;
                 if (diff < 0)
                 {
-                    diff += 10;
+                    diff += Base;
                     borrow = 1;
                 }
                 else
@@ -88,19 +91,53 @@ namespace WpfApp3.Models
                     borrow = 0;
                 }
 
-                result.Insert(0, diff.ToString());
-                i--;
-                j--;
+                result.Insert(0, diff);
             }
 
-            return result.ToString().TrimStart('0') == "" ? "0" : result.ToString().TrimStart('0');
+            // Trim leading zeros
+            while (result.Count > 1 && result[0] == 0)
+                result.RemoveAt(0);
+
+            number = result.ToArray();
         }
 
-        private static int CompareStrings(string a, string b)
+        public void Multiply(double num)
         {
-            if (a.Length != b.Length)
-                return a.Length.CompareTo(b.Length);
-            return string.Compare(a, b, StringComparison.Ordinal);
+            double current = double.Parse(this.getStringNumber());
+            current *= num;
+            number = ConvertToDigits(current);
+        }
+
+        public void Divide(double num)
+        {
+            if (num == 0)
+                throw new DivideByZeroException();
+            double current = double.Parse(this.getStringNumber());
+            current /= num;
+            number = ConvertToDigits(current);
+        }
+
+        private int[] ConvertToDigits(double value)
+        {
+            string str = ((long)value).ToString();
+            int[] digits = new int[str.Length];
+            for (int i = 0; i < str.Length; i++)
+                digits[i] = str[i] - '0';
+            return digits;
+        }
+
+        private int CompareTo(BigNumber other)
+        {
+            if (this.number.Length != other.number.Length)
+                return this.number.Length.CompareTo(other.number.Length);
+
+            for (int i = 0; i < this.number.Length; i++)
+            {
+                if (this.number[i] != other.number[i])
+                    return this.number[i].CompareTo(other.number[i]);
+            }
+
+            return 0;
         }
     }
 
