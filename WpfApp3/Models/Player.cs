@@ -63,12 +63,12 @@ namespace WpfApp3.Models
             BigNumber goldCopy = gold.getBigNumber();
             BigNumber costCopy = upgradeCost.getBigNumber();
 
-            goldCopy.Substruct(costCopy); // если gold < cost, число будет некорректным
+            goldCopy.Subtract(costCopy); // если gold < cost, число будет некорректным
 
             if (IsNegative(goldCopy))
                 return false;
 
-            gold.Substruct(upgradeCost);
+            gold.Subtract(upgradeCost);
             lvl++;
 
             double scale = upgradeModifier * lvl * 1.05;
@@ -82,7 +82,7 @@ namespace WpfApp3.Models
 
         private bool IsNegative(BigNumber bnum)
         {
-            string str = bnum.getStringNumber();
+            string str = bnum.ToString();
             return str.StartsWith("-");
         }
     }

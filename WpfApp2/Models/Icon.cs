@@ -14,7 +14,6 @@ namespace WpfApp2.Models
         {
             this.name = name;
             fullPath = path;
-            //fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", name);
         }
 
         public string Name() => name;

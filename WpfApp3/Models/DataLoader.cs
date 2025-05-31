@@ -7,7 +7,6 @@ namespace WpfApp3.Models
     {
         private static readonly string _baseDataFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "data.json");
         private static string? _dataFilePath = null;
-
         private static bool IsBaseFileAvailable => File.Exists(_baseDataFilePath);
         internal static string? DataFilePath
         {

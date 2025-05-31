@@ -19,13 +19,11 @@ namespace WpfApp3.Models
             normalizedChances = [];
         }
 
-        // Добавление шаблона в список
         public void AddEnemy(Enemy enemy)
         {
             enemyList.AddEnemy(enemy);
         }
 
-        // Нормализация шансов появления
         public void NormalizeChances()
         {
             var enemies = enemyList.GetListOfEnemies();
@@ -38,7 +36,6 @@ namespace WpfApp3.Models
 
         }
 
-        // Поиск шаблона по вероятности
         public Enemy? FindByChance(double chance)
         {
             double sum = 0;
@@ -51,7 +48,6 @@ namespace WpfApp3.Models
             return null;
         }
 
-        // Создание готового противника из шаблона по шансу
         public CEnemy? CreateEnemyByChance(double chance)
         {
             Enemy template = FindByChance(chance);

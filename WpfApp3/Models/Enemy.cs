@@ -11,39 +11,28 @@ namespace WpfApp3.Models
     {
         public string Name { get; private set; }
         public BigNumber HitPoints { get; private set; }
-        public BigNumber Gold { get; private set; }
+        public long Gold { get; private set; }
         public string IconName { get; private set; }
 
-        // Конструктор создания противника из шаблона
-        public CEnemy(Enemy template)
+        public CEnemy(Enemy template, int lvl = 1)
         {
             Name = template.Name();
 
-            // Рассчитываем текущее здоровье с модификатором
             int baseLife = template.BaseLife();
             double lifeModifier = template.LifeModifier();
-            HitPoints = new BigNumber((baseLife * lifeModifier).ToString());
+            HitPoints = new BigNumber((baseLife * (1 + (lvl - 1) * lifeModifier)).ToString());
 
-            // Рассчитываем золото, которое получит игрок после победы
             int baseGold = template.BaseGold();
             double goldModifier = template.GoldModifier();
-            Gold = new BigNumber((baseGold * goldModifier).ToString());
+            Gold = (long)Math.Ceiling(baseGold * (1 + lvl * goldModifier));
 
-            // Иконка - путь к изображению
             IconName = template.IconName();
         }
 
-        // Метод для нанесения урона (пример)
         public void TakeDamage(BigNumber damage)
         {
-            HitPoints.Substruct(damage);
-            if (HitPoints.getStringNumber() == "0")
-            {
-                // Логика смерти противника, если нужно
-            }
+            HitPoints.Subtract(damage);
         }
-
-        // Можно добавить другие методы, например, получение текущего здоровья или золота
     }
 
 }

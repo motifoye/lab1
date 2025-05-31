@@ -11,8 +11,10 @@ namespace WpfApp3
     public partial class MainWindow : Window
     {
         private readonly EnemyManager enemyManager;
-        private CEnemy currentEnemy;
+        private Enemy? currentEnemyTemplate;
+        private CEnemy? currentEnemy;
         private Player player;
+        private bool isBattleActive = true;
 
         public MainWindow()
         {
@@ -22,39 +24,33 @@ namespace WpfApp3
                 enemyManager.LoadEnemiesFromJson(DataLoader.DataFilePath);
                 enemyManager.NormalizeChances();
             }
+            player = new Player(new BigNumber("0"), new BigNumber("2"), 1.1, new BigNumber("10"), 1.5);
 
             InitializeComponent();
-
-            InitializePlayer();
+            CostTb.Text = player.UpgradeCost().ToString();
             SelectRandomEnemy();
             UpdateUI();
         }
 
-        private void InitializePlayer()
-        {
-            player = new Player(
-                new BigNumber("0"),       // золото
-                new BigNumber("1"),       // урон
-                1.1,                     // множитель урона
-                new BigNumber("10"),      // стоимость улучшения
-                1.5                      // множитель стоимости улучшения
-            );
-        }
-
         private void SelectRandomEnemy()
         {
-            // Выбираем случайное число от 0 до 1
             Random rnd = new Random();
             double chance = rnd.NextDouble();
 
-            currentEnemy = enemyManager.CreateEnemyByChance(chance);
-
-            if (currentEnemy == null)
+            currentEnemyTemplate = enemyManager.FindByChance(chance);
+            if (currentEnemyTemplate != null)
+            {
+                currentEnemy = new CEnemy(currentEnemyTemplate, player.GetLevel());
+                isBattleActive = true;
+                NextBtn.IsEnabled = false;
+                RepeatBtn.IsEnabled = false;
+            }
+            else
             {
                 MessageBox.Show("Не удалось выбрать противника.");
-                return;
             }
         }
+
 
         private void UpdateUI()
         {
@@ -88,53 +84,65 @@ namespace WpfApp3
 
         private void EnemyImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (currentEnemy == null) return;
+            if (currentEnemy == null || !isBattleActive) return;
+
             currentEnemy.TakeDamage(player.Damage());
             EnemyHitsTb.Text = currentEnemy.HitPoints.ToString();
 
-            if (currentEnemy.HitPoints.ToString() == "0")
+            if (currentEnemy.HitPoints.ToString() == "0" || currentEnemy.HitPoints.IsNegative)
             {
-                player.gainGold(currentEnemy.Gold);
+                player.gainGold(new(currentEnemy.Gold.ToString()));
                 PlayersGoldTb.Text = player.Gold().ToString();
-                SelectRandomEnemy();
-                UpdateUI();
+
+                isBattleActive = false;
+                NextBtn.IsEnabled = true;
+                RepeatBtn.IsEnabled = true;
+                UpdateUpgradeButton();
             }
         }
 
         private void UpgradeBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (player.Gold().CompareTo(player.UpgradeCost()) < 0)
+            {
+                MessageBox.Show("Недостаточно золота для улучшения!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             bool upgraded = player.upgrade();
             if (upgraded)
             {
-                // Обновляем отображение игрока
                 PlayersGoldTb.Text = player.Gold().ToString();
                 PlayersDamageTb.Text = player.Damage().ToString();
                 LevelTb.Text = player.GetLevel().ToString();
+                CostTb.Text = player.UpgradeCost().ToString();
             }
-            else
-            {
-                MessageBox.Show("Недостаточно золота для улучшения!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+
             UpdateUpgradeButton();
         }
 
         private void UpdateUpgradeButton()
         {
-            // Пробуем вычесть стоимость апгрейда из золота временно, чтобы проверить, хватает ли игроку золота
-            BigNumber goldCopy = player.Gold().getBigNumber();
-            BigNumber upgradeCost = player.UpgradeCost();
-
-            try
-            {
-                goldCopy.Substruct(upgradeCost);
-                UpgradeBtn.IsEnabled = true;
-            }
-            catch
-            {
-                UpgradeBtn.IsEnabled = false;
-            }
+            UpgradeBtn.IsEnabled = player.Gold().CompareTo(player.UpgradeCost()) >= 0;
         }
 
+        private void NextBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SelectRandomEnemy();
+            UpdateUI();
+        }
+
+        private void RepeatBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentEnemyTemplate != null)
+            {
+                currentEnemy = new CEnemy(currentEnemyTemplate, player.GetLevel());
+                isBattleActive = true;
+                NextBtn.IsEnabled = false;
+                RepeatBtn.IsEnabled = false;
+                UpdateUI();
+            }
+        }
 
     }
 }

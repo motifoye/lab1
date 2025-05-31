@@ -34,8 +34,8 @@
                HorizontalAlignment="Center" VerticalAlignment="Center" Height="120" Width="120"
                MouseLeftButtonDown="EnemyImage_MouseLeftButtonDown"/>
         <UniformGrid Grid.Row="4" Grid.Column="1" Rows="1" Margin="5">
-            <Button Content="Repeat"/>
-            <Button Content="Next" IsEnabled="False"/>
+            <Button Content="Repeat" x:Name="RepeatBtn" Click="RepeatBtn_Click"/>
+            <Button Content="Next" IsEnabled="False" x:Name="NextBtn" Click="NextBtn_Click"/>
         </UniformGrid>
         <TextBlock Grid.Row="1" Grid.Column="2" Text="Players gold" VerticalAlignment="Center" Height="30" Margin="5"/>
         <TextBlock Grid.Row="2" Grid.Column="2" x:Name="PlayersGoldTb" d:Text="text" VerticalAlignment="Center" Height="30" Margin="5"/>
@@ -45,6 +45,10 @@
             <TextBlock Text="Level" TextAlignment="Center" Height="30" Margin="5"/>
             <TextBlock x:Name="LevelTb" d:Text="text" TextAlignment="Left" Height="30" Margin="5"/>
         </UniformGrid>
+        <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <TextBlock Text="Cost: "/>
+            <TextBlock x:Name="CostTb" d:Text="text"/>
+        </StackPanel>
         <Button Grid.Row="3" Grid.Column="3" x:Name="UpgradeBtn" Content="Upgrade" IsEnabled="False" Click="UpgradeBtn_Click" Margin="5"/>
     </Grid>
 </Window>

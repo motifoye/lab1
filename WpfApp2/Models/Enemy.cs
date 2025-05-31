@@ -4,23 +4,18 @@ namespace WpfApp2.Models
 {
     public class Enemy
     {
-        //Название противника
         [JsonInclude]
         string name;
-        //Название иконки
         [JsonInclude]
         string iconName;
-        //Атрибуты здоровья
         [JsonInclude]
         int baseLife;
         [JsonInclude]
         double lifeModifier;
-        //Атрибуты золота за победу над противником
         [JsonInclude]
         int baseGold;
         [JsonInclude]
         double goldModifier;
-        //Шанс на появление
         [JsonInclude]
         double spawnChance;
 
