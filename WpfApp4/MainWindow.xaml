@@ -1,0 +1,31 @@
+﻿<Window x:Class="WpfApp4.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp4"
+        xmlns:ctrls="clr-namespace:WpfApp4.Controls"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Навигационная панель -->
+        <StackPanel Background="#EEE" Grid.Column="0">
+            <Button Content="Главная" Margin="5" Padding="5" 
+            Click="Home_Click"/>
+            <Button Content="Список викторин" Margin="5" Padding="5" 
+            Click="Quizzes_Click"/>
+            <Button Content="Список вопросов" Margin="5" Padding="5" 
+            Click="Questions_Click"/>
+        </StackPanel>
+
+        <!-- Основной контент -->
+        <ContentControl x:Name="MainContent" Grid.Column="1">
+            <ctrls:MainControl/>
+        </ContentControl>
+    </Grid>
+</Window>
