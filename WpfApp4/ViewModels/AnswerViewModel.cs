@@ -1,39 +1,40 @@
 ﻿using System.ComponentModel;
+using WpfApp4.Models;
 
-namespace WpfApp4.Controls
+namespace WpfApp4.ViewModels
 {
-    public partial class QuestionControl
+    internal class AnswerViewModel : INotifyPropertyChanged
     {
-        public class AnswerViewModel : INotifyPropertyChanged
+        private string _text = "";
+        private bool _isCorrect = false;
+        
+        public string Text
         {
-            private string _text = "";
-            private bool _isCorrect = false;
-            public string Text
+            get => _text;
+            set
             {
-                get => _text;
-                set
+                if (_text != value)
                 {
-                    if (_text != value)
-                    {
-                        _text = value;
-                        OnPropertyChanged(nameof(Text));
-                    }
+                    _text = value;
+                    OnPropertyChanged(nameof(Text));
                 }
             }
-            public bool IsCorrect
-            {
-                get => _isCorrect;
-                set
-                {
-                    if (_isCorrect != value)
-                    {
-                        _isCorrect = value;
-                        OnPropertyChanged(nameof(IsCorrect));
-                    }
-                }
-            }
-            public event PropertyChangedEventHandler? PropertyChanged;
-            protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        public bool IsCorrect
+        {
+            get => _isCorrect;
+            set
+            {
+                if (_isCorrect != value)
+                {
+                    _isCorrect = value;
+                    OnPropertyChanged(nameof(IsCorrect));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

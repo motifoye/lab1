@@ -4,17 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp4.Controls"
+             xmlns:vm="clr-namespace:WpfApp4.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             >
 
-    <!--<UserControl.DataContext>
-        <local:QuestionControl/>
-    </UserControl.DataContext>-->
+    <UserControl.DataContext>
+        <vm:QuestionViewModel/>
+    </UserControl.DataContext>
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
             <TextBlock Text="Текст вопроса:" FontWeight="Bold"/>
@@ -23,13 +25,13 @@
         </StackPanel>
         <StackPanel Grid.Row="1">
             <TextBlock Text="Варианты ответов:" FontWeight="Bold" Margin="0,0,0,5"/>
-            <ListBox ItemsSource="{Binding Answers}" SelectionMode="Single" x:Name="AnswersListBox">
+            <ListBox ItemsSource="{Binding Answers}" SelectionMode="Single" x:Name="AnswersListBox" HorizontalContentAlignment="Stretch">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <DockPanel Margin="0,2">
+                        <DockPanel Margin="5,2,0,2">
                             <RadioButton IsChecked="{Binding IsCorrect, Mode=TwoWay}" 
                                          GroupName="CorrectAnswerGroup" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="450"/>
+                            <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -38,6 +40,9 @@
                 <Button Content="Добавить вариант" Width="120" Command="{Binding AddAnswerCommand}"/>
                 <Button Content="Удалить вариант" Width="120" Margin="10,0,0,0" Command="{Binding RemoveAnswerCommand}" CommandParameter="{Binding ElementName=AnswersListBox, Path=SelectedItem}"/>
             </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button Content="Сохранить" Command="{Binding SaveCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>
