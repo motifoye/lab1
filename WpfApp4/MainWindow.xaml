@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp4"
         xmlns:ctrls="clr-namespace:WpfApp4.Controls"
+        xmlns:vm="clr-namespace:WpfApp4.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
@@ -16,16 +20,15 @@
         <!-- Навигационная панель -->
         <StackPanel Background="#EEE" Grid.Column="0">
             <Button Content="Главная" Margin="5" Padding="5" 
-            Click="Home_Click"/>
+            Command="{Binding GoHomeCommand}"/>
             <Button Content="Список викторин" Margin="5" Padding="5" 
-            Click="Quizzes_Click"/>
+            Command="{Binding GoQuestionsCommand}"/>
             <Button Content="Список вопросов" Margin="5" Padding="5" 
-            Click="Questions_Click"/>
+            Command="{Binding GoQuizsCommand}"/>
         </StackPanel>
 
         <!-- Основной контент -->
-        <ContentControl x:Name="MainContent" Grid.Column="1">
-            <ctrls:MainControl/>
+        <ContentControl x:Name="MainContent" Grid.Column="1" Content="{Binding ActiveControl}">
         </ContentControl>
     </Grid>
 </Window>
