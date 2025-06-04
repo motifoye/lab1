@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using WpfApp4.Commands;
+using WpfApp4.Controls;
 using WpfApp4.Models;
 
 namespace WpfApp4.ViewModels
@@ -16,13 +17,19 @@ namespace WpfApp4.ViewModels
 
         public QuestionViewModel()
         {
-            Answers = new ObservableCollection<AnswerViewModel>();
-            // Добавим два пустых варианта по умолчанию
-            Answers.Add(new AnswerViewModel { Text = "", IsCorrect = true });
-            Answers.Add(new AnswerViewModel { Text = "", IsCorrect = false });
+            Answers = [NewAnswerControl(true), NewAnswerControl(false)];
+            
+            //Answers =
+            //[
+            //    // Два пустых варианта по умолчанию
+            //    new AnswerViewModel { Text = "", IsCorrect = true },
+            //    new AnswerViewModel { Text = "", IsCorrect = false },
+            //];
         }
 
-        public ObservableCollection<AnswerViewModel> Answers { get;  set; }
+        #region Props
+        //public ObservableCollection<AnswerViewModel> Answers { get; set; }
+        public ObservableCollection<AnswerControl> Answers { get; set; } = [];
 
         public string QuestionText
         {
@@ -36,65 +43,87 @@ namespace WpfApp4.ViewModels
                 }
             }
         }
+        #endregion
 
-        public ICommand AddAnswerCommand => _addAnswerCommand ??= new RelayCommand(_ =>
-            Answers.Add(new AnswerViewModel { Text = "", IsCorrect = false }));
+        #region Commands
+        //public ICommand AddAnswerCommand => _addAnswerCommand ??= new RelayCommand(_ =>
+        //    Answers.Add(new AnswerViewModel { Text = "", IsCorrect = false }));
 
-        public ICommand RemoveAnswerCommand => _removeAnswerCommand ??= new RelayCommand(param =>
+        //public ICommand RemoveAnswerCommand => _removeAnswerCommand ??= new RelayCommand(param =>
+        //{
+        //    if (param is AnswerViewModel answer)
+        //    {
+        //        Answers.Remove(answer);
+        //    }
+        //});
+
+        //public ICommand SaveCommand => _save ??= new RelayCommand(param =>
+        //{
+
+        //}); 
+        #endregion
+
+        #region Methods
+        private AnswerControl NewAnswerControl(bool isCorrect)
         {
-            if (param is AnswerViewModel answer)
+            var ac = new AnswerControl();
+            if (ac.DataContext is not AnswerViewModel vm)
             {
-                Answers.Remove(answer);
+                vm = new AnswerViewModel();
+                ac.DataContext = vm;
             }
-        });
 
-        public ICommand SaveCommand => _save ??= new RelayCommand(param =>
-        {
-            var ans = (from answer in Answers select new Answer(answer.Text, answer.IsCorrect)).ToList();
-
-            Save?.Invoke(new Question(QuestionText,ans));
-        });
-
-        public void LoadQuestion(Question question)
-        {
-            ArgumentNullException.ThrowIfNull(question);
-            QuestionText = question.Text;
-            Answers.Clear();
-            foreach (var a in question.Answers)
+            vm.IsCorrect = isCorrect;
+            vm.IsEdit = true;
+            vm.Delete += (obj) =>
             {
-                Answers.Add(new AnswerViewModel { Text = a.Text, IsCorrect = a.IsCorrect });
-            }
+                if (obj is AnswerControl control)
+                    Answers.Remove(control);
+            };
+
+            return ac;
         }
+        //public void LoadQuestion(Question question)
+        //{
+        //    ArgumentNullException.ThrowIfNull(question);
+        //    QuestionText = question.Text;
+        //    Answers.Clear();
+        //    foreach (var a in question.Answers)
+        //    {
+        //        Answers.Add(new AnswerViewModel { Text = a.Text, IsCorrect = a.IsCorrect });
+        //    }
+        //}
 
-        public Question? GetQuestionOrNull()
-        {
-            if (string.IsNullOrWhiteSpace(QuestionText))
-            {
-                MessageBox.Show("Введите текст вопроса.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-            if (Answers.Count < 2)
-            {
-                MessageBox.Show("Должно быть не менее двух вариантов ответов.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-            if (!Answers.Any(a => a.IsCorrect))
-            {
-                MessageBox.Show("Должен быть выбран правильный ответ.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-            if (Answers.Any(a => string.IsNullOrWhiteSpace(a.Text)))
-            {
-                MessageBox.Show("Все варианты ответов должны быть заполнены.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-            var answers = Answers.Select(a => new Answer(a.Text, a.IsCorrect)).ToList();
-            return new Question(QuestionText, answers);
-        }
-        
+        //public Question? GetQuestionOrNull()
+        //{
+        //    if (string.IsNullOrWhiteSpace(QuestionText))
+        //    {
+        //        MessageBox.Show("Введите текст вопроса.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        return null;
+        //    }
+        //    if (Answers.Count < 2)
+        //    {
+        //        MessageBox.Show("Должно быть не менее двух вариантов ответов.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        return null;
+        //    }
+        //    if (!Answers.Any(a => a.IsCorrect))
+        //    {
+        //        MessageBox.Show("Должен быть выбран правильный ответ.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        return null;
+        //    }
+        //    if (Answers.Any(a => string.IsNullOrWhiteSpace(a.Text)))
+        //    {
+        //        MessageBox.Show("Все варианты ответов должны быть заполнены.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        return null;
+        //    }
+        //    var answers = Answers.Select(a => new Answer(a.Text, a.IsCorrect)).ToList();
+        //    return new Question(QuestionText, answers);
+        //} 
+        #endregion
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public event Action<Question> Save;
+        public event Action<Question>? Save;
 
         protected void OnPropertyChanged(string name) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

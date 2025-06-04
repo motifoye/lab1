@@ -25,17 +25,7 @@
         </StackPanel>
         <StackPanel Grid.Row="1">
             <TextBlock Text="Варианты ответов:" FontWeight="Bold" Margin="0,0,0,5"/>
-            <ListBox ItemsSource="{Binding Answers}" SelectionMode="Single" x:Name="AnswersListBox" HorizontalContentAlignment="Stretch">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <DockPanel Margin="5,2,0,2">
-                            <RadioButton IsChecked="{Binding IsCorrect, Mode=TwoWay}" 
-                                         GroupName="CorrectAnswerGroup" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </DockPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ItemsControl ItemsSource="{Binding Answers}"/>
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                 <Button Content="Добавить вариант" Width="120" Command="{Binding AddAnswerCommand}"/>
                 <Button Content="Удалить вариант" Width="120" Margin="10,0,0,0" Command="{Binding RemoveAnswerCommand}" CommandParameter="{Binding ElementName=AnswersListBox, Path=SelectedItem}"/>
