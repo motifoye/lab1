@@ -1,15 +1,21 @@
 ﻿namespace WpfApp4.Models
 {
-    // Класс Ответа
     public class Answer
     {
-        public string Text { get; private set; }
-        public bool IsCorrect { get; private set; }
+        private uint id;
+        private static uint lastId = 0;
 
-        public Answer(string text, bool isCorrect)
+        public Answer()
         {
-            Text = text ?? throw new ArgumentNullException(nameof(text));
-            IsCorrect = isCorrect;
+            Id = ++lastId;
         }
+
+        public uint Id
+        {
+            get => id;
+            private set => id = value;
+        }
+        public string? Text { get; set; }
+        public bool IsCorrect { get; set; } = false;
     }
 }

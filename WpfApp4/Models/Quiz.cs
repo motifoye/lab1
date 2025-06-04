@@ -1,28 +1,21 @@
 ﻿namespace WpfApp4.Models
 {
-    // Класс Викторины
     public class Quiz
     {
-        public string Title { get; private set; }
-        private List<Question> _questions;
+        private uint id;
+        private static uint lastId = 0;
 
-        public IReadOnlyList<Question> Questions => _questions.AsReadOnly();
-
-        public Quiz(string title)
+        public Quiz()
         {
-            if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentException("Quiz title cannot be empty.", nameof(title));
-
-            Title = title;
-            _questions = new List<Question>();
+            Id = ++lastId;
         }
 
-        public void AddQuestion(Question question)
+        public uint Id
         {
-            if (question == null)
-                throw new ArgumentNullException(nameof(question));
-
-            _questions.Add(question);
+            get => id;
+            private set => id = value;
         }
+        public string? Title { get; set; }
+        public List<Question> Questions = [];
     }
 }
