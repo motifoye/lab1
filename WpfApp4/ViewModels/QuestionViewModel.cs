@@ -1,131 +1,27 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows;
-using System.Windows.Input;
-using WpfApp4.Commands;
-using WpfApp4.Controls;
-using WpfApp4.Models;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace WpfApp4.ViewModels
 {
     internal class QuestionViewModel : INotifyPropertyChanged
     {
-        private string _questionText = "";
-        private ICommand? _addAnswerCommand;
-        private ICommand? _removeAnswerCommand;
-        private ICommand? _save;
+        private string? text;
 
-        public QuestionViewModel()
+        public string Text
         {
-            Answers = [NewAnswerControl(true), NewAnswerControl(false)];
-            
-            //Answers =
-            //[
-            //    // Два пустых варианта по умолчанию
-            //    new AnswerViewModel { Text = "", IsCorrect = true },
-            //    new AnswerViewModel { Text = "", IsCorrect = false },
-            //];
-        }
-
-        #region Props
-        //public ObservableCollection<AnswerViewModel> Answers { get; set; }
-        public ObservableCollection<AnswerControl> Answers { get; set; } = [];
-
-        public string QuestionText
-        {
-            get => _questionText;
-            set
+            get => text ?? "";
+            set 
             {
-                if (_questionText != value)
-                {
-                    _questionText = value;
-                    OnPropertyChanged(nameof(QuestionText));
-                }
+                text = value;
+                OnPropertyChanged(nameof(Text));
             }
         }
-        #endregion
-
-        #region Commands
-        //public ICommand AddAnswerCommand => _addAnswerCommand ??= new RelayCommand(_ =>
-        //    Answers.Add(new AnswerViewModel { Text = "", IsCorrect = false }));
-
-        //public ICommand RemoveAnswerCommand => _removeAnswerCommand ??= new RelayCommand(param =>
-        //{
-        //    if (param is AnswerViewModel answer)
-        //    {
-        //        Answers.Remove(answer);
-        //    }
-        //});
-
-        //public ICommand SaveCommand => _save ??= new RelayCommand(param =>
-        //{
-
-        //}); 
-        #endregion
-
-        #region Methods
-        private AnswerControl NewAnswerControl(bool isCorrect)
-        {
-            var ac = new AnswerControl();
-            if (ac.DataContext is not AnswerViewModel vm)
-            {
-                vm = new AnswerViewModel();
-                ac.DataContext = vm;
-            }
-
-            vm.IsCorrect = isCorrect;
-            vm.IsEdit = true;
-            vm.Delete += (obj) =>
-            {
-                if (obj is AnswerControl control)
-                    Answers.Remove(control);
-            };
-
-            return ac;
-        }
-        //public void LoadQuestion(Question question)
-        //{
-        //    ArgumentNullException.ThrowIfNull(question);
-        //    QuestionText = question.Text;
-        //    Answers.Clear();
-        //    foreach (var a in question.Answers)
-        //    {
-        //        Answers.Add(new AnswerViewModel { Text = a.Text, IsCorrect = a.IsCorrect });
-        //    }
-        //}
-
-        //public Question? GetQuestionOrNull()
-        //{
-        //    if (string.IsNullOrWhiteSpace(QuestionText))
-        //    {
-        //        MessageBox.Show("Введите текст вопроса.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        return null;
-        //    }
-        //    if (Answers.Count < 2)
-        //    {
-        //        MessageBox.Show("Должно быть не менее двух вариантов ответов.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        return null;
-        //    }
-        //    if (!Answers.Any(a => a.IsCorrect))
-        //    {
-        //        MessageBox.Show("Должен быть выбран правильный ответ.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        return null;
-        //    }
-        //    if (Answers.Any(a => string.IsNullOrWhiteSpace(a.Text)))
-        //    {
-        //        MessageBox.Show("Все варианты ответов должны быть заполнены.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        return null;
-        //    }
-        //    var answers = Answers.Select(a => new Answer(a.Text, a.IsCorrect)).ToList();
-        //    return new Question(QuestionText, answers);
-        //} 
-        #endregion
 
         public event PropertyChangedEventHandler? PropertyChanged;
-
-        public event Action<Question>? Save;
-
-        protected void OnPropertyChanged(string name) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

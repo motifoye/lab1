@@ -15,39 +15,38 @@ namespace WpfApp4.ViewModels
     internal class QuestionListViewModel : INotifyPropertyChanged
     {
         #region Privats
-        private QuestionListControl? _QuestionListControlInstance;
-        private QuestionControl? _questionControl;
-        private ICommand? _goQuestion;
+        private ICommand? _goQuestionEdit;
         #endregion
 
         public QuestionListViewModel()
         {
-            Questions = new ObservableCollection<Question>();
-            QuestionsVM = new();
+            Questions = new(Data.Questions.Select(q =>
+            {
+                var qc = new QuestionControl();
+                var vm = (QuestionViewModel)qc.DataContext;
+                vm.Text = q.Text;
+                return qc;
+            }).ToList()
+            );
         }
 
         #region Properties
-        public ObservableCollection<Question> Questions { get;  set; }
-        public ObservableCollection<QuestionViewModel> QuestionsVM { get;  set; }
+        public ObservableCollection<QuestionControl> Questions { get; set; }
         #endregion
 
         #region Commands
-        public ICommand GoQuestionCommand => _goQuestion ??= new RelayCommand(p =>
+        public ICommand GoQuestionEditCommand => _goQuestionEdit ??= new RelayCommand(p =>
         {
-            _QuestionListControlInstance = p as QuestionListControl;
-            _questionControl = new QuestionControl();
-            var dc = _questionControl.DataContext as QuestionViewModel;
-            dc.Save += AddQuestion;
-            MainViewModel.Instance.ActiveControl = _questionControl;
-            QuestionsVM.Add(dc);
+            QuestionEditControl questionEditControl = new();
+            ((QuestionEditViewModel)questionEditControl.DataContext).Saved += QuestionsUpdate;
+            MainViewModel.Instance.ActiveControl = questionEditControl;
         });
         #endregion
 
         #region Methods
-        private void AddQuestion(Question question)
+        private void QuestionsUpdate()
         {
-            Questions.Add(question);
-            MainViewModel.Instance.ActiveControl = _QuestionListControlInstance;
+            MainViewModel.Instance.ActiveControl = new QuestionListControl();
         }
         #endregion
 

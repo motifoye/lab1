@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel;
-using System.Windows.Controls;
 using System.Windows.Input;
 using WpfApp4.Commands;
 using WpfApp4.Controls;
-using WpfApp4.Models;
 
 namespace WpfApp4.ViewModels
 {
@@ -12,6 +10,7 @@ namespace WpfApp4.ViewModels
         private ICommand? remove;
         private string _text = "";
         private bool _isCorrect = false;
+        private bool _isEdit = false;
 
         #region Props
         public string Text
@@ -40,17 +39,30 @@ namespace WpfApp4.ViewModels
             }
         }
 
-        public bool IsEdit { get; set; } = false; 
+        public bool IsEdit
+        {
+            get => _isEdit;
+            set
+            {
+                if (_isEdit != value)
+                {
+                    _isEdit = value;
+                    OnPropertyChanged(nameof(IsEdit));
+                }
+            }
+        }
         #endregion
 
+        #region Commands
         public ICommand RemoveCommand => remove ??= new RelayCommand(obj =>
         {
             if (obj is AnswerControl control)
                 Delete?.Invoke(control);
         });
+        #endregion
 
-        public event PropertyChangedEventHandler? PropertyChanged;
         public event Action<AnswerControl>? Delete;
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

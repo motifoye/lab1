@@ -27,6 +27,6 @@
         <Button Grid.Column="2"
                 Content="❌"
                 Command="{Binding RemoveCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" />
     </Grid>
 </UserControl>

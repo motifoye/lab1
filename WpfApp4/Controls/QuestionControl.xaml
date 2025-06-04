@@ -5,34 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp4.Controls"
              xmlns:vm="clr-namespace:WpfApp4.ViewModels"
-             mc:Ignorable="d" 
-             >
-
+             mc:Ignorable="d" >
     <UserControl.DataContext>
         <vm:QuestionViewModel/>
     </UserControl.DataContext>
-
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Текст вопроса:" FontWeight="Bold"/>
-            <TextBox Text="{Binding QuestionText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     Height="60" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Row="1">
-            <TextBlock Text="Варианты ответов:" FontWeight="Bold" Margin="0,0,0,5"/>
-            <ItemsControl ItemsSource="{Binding Answers}"/>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <Button Content="Добавить вариант" Width="120" Command="{Binding AddAnswerCommand}"/>
-                <Button Content="Удалить вариант" Width="120" Margin="10,0,0,0" Command="{Binding RemoveAnswerCommand}" CommandParameter="{Binding ElementName=AnswersListBox, Path=SelectedItem}"/>
+    <Border BorderThickness="1" BorderBrush="Black" Margin="5,2">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#DDDDDD" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding Path=Text}" Margin="5"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="Смотреть" Padding="5"/>
+                <Button Content="❌" Padding="5"/>
             </StackPanel>
-        </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button Content="Сохранить" Command="{Binding SaveCommand}"/>
-        </StackPanel>
-    </Grid>
+        </Grid>
+    </Border>
 </UserControl>
