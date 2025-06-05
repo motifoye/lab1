@@ -21,10 +21,7 @@ namespace WpfApp4.ViewModels
         private ICommand? _goQuizs; 
         #endregion
 
-        public MainViewModel()
-        {
-            _instance = this;
-        }
+        private MainViewModel() { }
 
         #region Properties
         public static MainViewModel Instance => _instance ??= new MainViewModel();
