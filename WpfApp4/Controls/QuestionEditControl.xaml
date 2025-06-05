@@ -23,7 +23,9 @@
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
             <TextBlock Text="Текст вопроса:" FontWeight="Bold"/>
             <TextBox Text="{Binding QuestionText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     Height="60" TextWrapping="Wrap"/>
+                     Height="80" TextWrapping="Wrap"
+                     IsReadOnly="{Binding IsReadOnly}"
+                     />
             <TextBlock Text="Варианты ответов:" FontWeight="Bold" Margin="0,0,0,5"/>
         </StackPanel>
         
@@ -49,8 +51,31 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Добавить вариант" Padding="5" Command="{Binding AddAnswerCommand}"/>
-            <Button Grid.Column="2" Content="Сохранить" Padding="5" Command="{Binding SaveCommand}"/>
+
+            <Button Grid.Column="0" Content="Добавить вариант" Padding="5" Command="{Binding AddAnswerCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsReadOnly}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            
+            <Button Grid.Column="2" Content="Сохранить" Padding="5" Command="{Binding SaveCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsReadOnly}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            
         </Grid>
 
     </Grid>

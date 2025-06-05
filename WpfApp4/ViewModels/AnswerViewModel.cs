@@ -10,7 +10,8 @@ namespace WpfApp4.ViewModels
         private ICommand? remove;
         private string _text = "";
         private bool _isCorrect = false;
-        private bool _isEdit = false;
+        private bool _isReadOnly = false;
+        private bool _isAttempt = false;
 
         #region Props
         public string Text
@@ -39,15 +40,28 @@ namespace WpfApp4.ViewModels
             }
         }
 
-        public bool IsEdit
+        public bool IsReadOnly
         {
-            get => _isEdit;
+            get => _isReadOnly;
             set
             {
-                if (_isEdit != value)
+                if (_isReadOnly != value)
                 {
-                    _isEdit = value;
-                    OnPropertyChanged(nameof(IsEdit));
+                    _isReadOnly = value;
+                    OnPropertyChanged(nameof(IsReadOnly));
+                }
+            }
+        }
+        
+        public bool IsAttempt
+        {
+            get => _isAttempt;
+            set
+            {
+                if (_isAttempt != value)
+                {
+                    _isAttempt = value;
+                    OnPropertyChanged(nameof(IsAttempt));
                 }
             }
         }

@@ -15,18 +15,47 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
+
         <RadioButton IsChecked="{Binding Path=IsCorrect, Mode=TwoWay}" 
                      GroupName="CorrectAnswerGroup" 
                      VerticalAlignment="Center"
                      HorizontalAlignment="Center"
-                     Margin="0,0,2,0"/>
+                     Margin="0,0,2,0">
+            <RadioButton.Style>
+                <Style TargetType="RadioButton">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsReadOnly}" Value="True" />
+                                <Condition Binding="{Binding IsAttempt}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </RadioButton.Style>
+        </RadioButton>
+        
         <TextBox Grid.Column="1" 
                  Text="{Binding Path=Text, Mode=TwoWay}" 
-                 IsEnabled="{Binding Path=IsEdit, Mode=OneWay}" 
+                 TextWrapping="Wrap"
+                 IsReadOnly="{Binding Path=IsReadOnly}" 
                  HorizontalAlignment="Stretch"/>
+        
         <Button Grid.Column="2"
                 Content="❌"
                 Command="{Binding RemoveCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsReadOnly}" Value="true">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
     </Grid>
 </UserControl>

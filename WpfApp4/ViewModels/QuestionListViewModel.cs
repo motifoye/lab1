@@ -20,14 +20,16 @@ namespace WpfApp4.ViewModels
 
         public QuestionListViewModel()
         {
-            Questions = new(Data.Questions.Select(q =>
-            {
-                var qc = new QuestionControl();
-                var vm = (QuestionViewModel)qc.DataContext;
-                vm.Text = q.Text;
-                return qc;
-            }).ToList()
-            );
+            Questions = new(Data.Questions
+                .Select(q =>
+                {
+                    var qc = new QuestionControl();
+                    var vm = (QuestionViewModel)qc.DataContext;
+                    vm.Question = q;
+                    vm.Deleted += QuestionDeleted;
+                    return qc;
+                })
+                .ToList());
         }
 
         #region Properties
@@ -47,6 +49,11 @@ namespace WpfApp4.ViewModels
         private void QuestionsUpdate()
         {
             MainViewModel.Instance.ActiveControl = new QuestionListControl();
+        }
+
+        private void QuestionDeleted(QuestionControl question)
+        {
+            Questions.Remove(question);
         }
         #endregion
 

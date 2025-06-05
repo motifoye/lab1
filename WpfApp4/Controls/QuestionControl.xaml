@@ -24,11 +24,20 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
+            
             <TextBlock Text="{Binding Path=Text}" Margin="5"/>
+
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Button Content="Смотреть" Padding="5"/>
-                <Button Content="❌" Padding="5"/>
+
+                <Button Content="Смотреть" Padding="5"
+                        Command="{Binding LookCommand}"/>
+
+                <Button Content="❌" Padding="5"
+                        Command="{Binding Path=DeleteCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            
             </StackPanel>
+            
         </Grid>
     </Border>
 </UserControl>

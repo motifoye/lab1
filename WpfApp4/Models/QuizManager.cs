@@ -8,46 +8,35 @@ using System.Threading.Tasks;
 
 namespace WpfApp4.Models
 {
-    public class QuizManager
+    public class QuizManager(string filePath)
     {
-        private List<Quiz> _quizzes = new List<Quiz>();
-
-        public IReadOnlyList<Quiz> Quizzes => _quizzes.AsReadOnly();
-
-        private readonly string _filePath;
-
-        public QuizManager(string filePath)
+        private List<Quiz> _quizzes = [];
+        private readonly JsonSerializerOptions opts = new()
         {
-            _filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
-        }
+            WriteIndented = true,
+        };
+
+        public IReadOnlyList<Quiz>? Quizzes => _quizzes.AsReadOnly();
+
+        private readonly string _filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
 
         public void AddQuiz(Quiz quiz)
         {
-            if (quiz == null)
-                throw new ArgumentNullException(nameof(quiz));
+            ArgumentNullException.ThrowIfNull(quiz);
 
             _quizzes.Add(quiz);
         }
 
         public bool RemoveQuiz(Quiz quiz)
         {
-            if (quiz == null)
-                throw new ArgumentNullException(nameof(quiz));
+            ArgumentNullException.ThrowIfNull(quiz);
 
             return _quizzes.Remove(quiz);
         }
 
         public void Save()
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                // Чтобы сериализатор мог корректно обрабатывать только свойства с приватными сеттерами:
-                IncludeFields = false,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            };
-
-            string json = JsonSerializer.Serialize(_quizzes, options);
+            string json = JsonSerializer.Serialize(_quizzes, opts);
             File.WriteAllText(_filePath, json);
         }
 
@@ -55,25 +44,19 @@ namespace WpfApp4.Models
         {
             if (!File.Exists(_filePath))
             {
-                _quizzes = new List<Quiz>();
+                _quizzes = [];
                 return;
             }
 
             string json = File.ReadAllText(_filePath);
 
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            };
-
             try
             {
-                _quizzes = JsonSerializer.Deserialize<List<Quiz>>(json, options) ?? new List<Quiz>();
+                _quizzes = JsonSerializer.Deserialize<List<Quiz>>(json, opts) ?? [];
             }
             catch (JsonException)
             {
-                // Можно обработать ошибку десериализации, например, очистить список или уведомить пользователя
-                _quizzes = new List<Quiz>();
+                _quizzes = [];
             }
         }
     }

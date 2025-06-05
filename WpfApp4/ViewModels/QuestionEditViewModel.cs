@@ -11,9 +11,10 @@ namespace WpfApp4.ViewModels
     internal class QuestionEditViewModel : INotifyPropertyChanged
     {
         private string _questionText = "";
+        private bool _isReadOnly = false;
         private ICommand? _addAnswerCommand;
-        private ICommand? _removeAnswerCommand;
         private ICommand? _saveCommand;
+        private ObservableCollection<AnswerControl> _answers = [];
 
         public QuestionEditViewModel()
         {
@@ -21,7 +22,17 @@ namespace WpfApp4.ViewModels
         }
 
         #region Props
-        public ObservableCollection<AnswerControl> Answers { get; set; } = [];
+        public ObservableCollection<AnswerControl> Answers
+        {
+            get => _answers;
+            set
+            {
+                if (_answers == value)
+                    return;
+                _answers = value;
+                OnPropertyChanged(nameof(Answers));
+            }
+        }
 
         public string QuestionText
         {
@@ -33,6 +44,18 @@ namespace WpfApp4.ViewModels
                     _questionText = value;
                     OnPropertyChanged(nameof(QuestionText));
                 }
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get => _isReadOnly;
+            set
+            {
+                if (_isReadOnly == value)
+                    return;
+                _isReadOnly = value;
+                OnPropertyChanged(nameof(IsReadOnly));
             }
         }
         #endregion
@@ -54,7 +77,6 @@ namespace WpfApp4.ViewModels
             var ac = new AnswerControl();
             var vm = (AnswerViewModel)ac.DataContext;
             vm.IsCorrect = isCorrect;
-            vm.IsEdit = true;
             vm.Deleted += (obj) =>
             {
                 if (obj is AnswerControl control)
@@ -103,9 +125,8 @@ namespace WpfApp4.ViewModels
         }
         #endregion
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         public event Action? Saved;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged(string name) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
