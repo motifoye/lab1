@@ -43,8 +43,8 @@ namespace WpfApp4.ViewModels
 
         public ICommand SaveCommand => _saveCommand ??= new RelayCommand(_ =>
         {
-            Save();
-            Saved?.Invoke();
+            if (Save())
+                Saved?.Invoke();
         });
         #endregion
 
@@ -64,30 +64,30 @@ namespace WpfApp4.ViewModels
             return ac;
         }
 
-        private void Save()
+        private bool Save()
         {
             if (string.IsNullOrWhiteSpace(QuestionText))
             {
                 MessageBox.Show("Введите текст вопроса.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
             
             if (Answers.Count < 2)
             {
                 MessageBox.Show("Должно быть не менее двух вариантов ответов.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
             
             if (!Answers.Any(a => ((AnswerViewModel)a.DataContext).IsCorrect))
             {
                 MessageBox.Show("Должен быть выбран правильный ответ.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
             
             if (Answers.Any(a => string.IsNullOrWhiteSpace(((AnswerViewModel)a.DataContext).Text)))
             {
                 MessageBox.Show("Все варианты ответов должны быть заполнены.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
 
             var answers = Answers.Select(a => 
@@ -99,6 +99,7 @@ namespace WpfApp4.ViewModels
             }).ToList();
             var question =  new Question() { Text = QuestionText, Answers = answers };
             Data.Questions.Add(question);
+            return true;
         }
         #endregion
 
