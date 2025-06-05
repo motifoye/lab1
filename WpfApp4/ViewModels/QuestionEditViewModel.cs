@@ -55,7 +55,7 @@ namespace WpfApp4.ViewModels
             var vm = (AnswerViewModel)ac.DataContext;
             vm.IsCorrect = isCorrect;
             vm.IsEdit = true;
-            vm.Delete += (obj) =>
+            vm.Deleted += (obj) =>
             {
                 if (obj is AnswerControl control)
                     Answers.Remove(control);

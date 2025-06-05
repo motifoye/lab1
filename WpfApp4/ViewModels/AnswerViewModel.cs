@@ -57,11 +57,11 @@ namespace WpfApp4.ViewModels
         public ICommand RemoveCommand => remove ??= new RelayCommand(obj =>
         {
             if (obj is AnswerControl control)
-                Delete?.Invoke(control);
+                Deleted?.Invoke(control);
         });
         #endregion
 
-        public event Action<AnswerControl>? Delete;
+        public event Action<AnswerControl>? Deleted;
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
