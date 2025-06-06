@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Text.Json;
 using WpfApp4.Models;
 
@@ -12,11 +14,18 @@ namespace WpfApp4
             WriteIndented = true // форматирование JSON
         };
 
-        public static List<Answer> Answers { get; } = Load<Answer>();
-        public static List<Question> Questions { get; } = Load<Question>();
-        public static List<Quiz> Quizzes { get; } = Load<Quiz>();
+        public static ObservableCollection<Answer> Answers { get; } = Load<Answer>();
+        public static ObservableCollection<Question> Questions { get; } = Load<Question>();
+        public static ObservableCollection<Quiz> Quizzes { get; } = Load<Quiz>();
 
-        private static List<T> Load<T>()
+        static Data()
+        {
+            Answers.CollectionChanged += (s, e) => Save<Answer>();
+            Questions.CollectionChanged += (s, e) => Save<Question>();
+            Quizzes.CollectionChanged += (s, e) => Save<Quiz>();
+        }
+
+        private static ObservableCollection<T> Load<T>()
         {
             string filename = typeof(T).Name + ".json";
             string fullPath = Path.Combine(path, filename);
@@ -36,8 +45,8 @@ namespace WpfApp4
                 return [];
 
             try
-            {
-                return JsonSerializer.Deserialize<List<T>>(text) ?? [];
+            {   
+                return JsonSerializer.Deserialize<ObservableCollection<T>>(text) ?? [];
             }
             catch
             {
@@ -49,11 +58,11 @@ namespace WpfApp4
         {
             try
             {
-                List<T> list = typeof(T) switch
+                ObservableCollection<T> list = typeof(T) switch
                 {
-                    Type t when t == typeof(Answer) => (List<T>)(object)Answers,
-                    Type t when t == typeof(Question) => (List<T>)(object)Questions,
-                    Type t when t == typeof(Quiz) => (List<T>)(object)Quizzes,
+                    Type t when t == typeof(Answer) => (ObservableCollection<T>)(object)Answers,
+                    Type t when t == typeof(Question) => (ObservableCollection<T>)(object)Questions,
+                    Type t when t == typeof(Quiz) => (ObservableCollection<T>)(object)Quizzes,
                     _ => throw new NotSupportedException($"Saving type {typeof(T).Name} is not supported.")
                 };
 

@@ -15,20 +15,23 @@ namespace WpfApp4.ViewModels
     {
         #region Pirvats
         private static MainViewModel? _instance;
-        private ContentControl _activeControl = new MainControl();
+        private ContentControl _activeControl;
         private ICommand? _goHome;
         private ICommand? _goQuestions;
         private ICommand? _goQuizs; 
         #endregion
 
-        private MainViewModel() { }
+        private MainViewModel()
+        {
+            _activeControl = new MainControl();
+        }
 
         #region Properties
         public static MainViewModel Instance => _instance ??= new MainViewModel();
         public ContentControl ActiveControl
         {
             get => _activeControl;
-            set
+            private set
             {
                 if (value != _activeControl)
                 {
@@ -40,18 +43,20 @@ namespace WpfApp4.ViewModels
         #endregion
 
         #region Commands
-        public ICommand GoHomeCommand => _goHome ??= new RelayCommand(_ =>
-        {
-            ActiveControl = new MainControl();
-        });
-        public ICommand GoQuestionsCommand => _goQuestions ??= new RelayCommand(_ =>
-        {
-            ActiveControl = new QuestionListControl();
-        });public ICommand GoQuizsCommand => _goQuizs ??= new RelayCommand(_ =>
-        {
-            ActiveControl = new QuizListControl();
-        });
+        public ICommand GoHomeCommand => _goHome ??= 
+            new RelayCommand(_ => SetActiveControl(new MainControl()));
+
+        public ICommand GoQuizsCommand => _goQuizs ??= 
+            new RelayCommand(_ => SetActiveControl(new QuizListControl()));
+
+        public ICommand GoQuestionsCommand => _goQuestions ??= 
+            new RelayCommand(_ => SetActiveControl(new QuestionListControl()));
         #endregion
+
+        public void SetActiveControl(ContentControl contentControl)
+        {
+            ActiveControl = contentControl;
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

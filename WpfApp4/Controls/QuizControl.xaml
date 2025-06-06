@@ -5,26 +5,39 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp4.Controls"
              xmlns:vm="clr-namespace:WpfApp4.ViewModels"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d" >
     <UserControl.DataContext>
         <vm:QuizViewModel/>
     </UserControl.DataContext>
-    <Grid Margin="10">
-        
-        <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
-        
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        
-        <TextBlock Grid.Row="0" 
-                   Text="{Binding Title}" 
-                   FontSize="16" 
-                   FontWeight="Bold" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center"
-                   />
+    <Border BorderThickness="1" BorderBrush="Black" Margin="5,2">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#DDDDDD" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
 
-    </Grid>
+            <TextBlock Text="{Binding Path=Title}" Margin="5"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+
+                <Button Content="Смотреть" Padding="5"
+                    Command="{Binding LookCommand}"/>
+
+                <Button Content="❌" Padding="5"
+                    Command="{Binding Path=DeleteCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+
+            </StackPanel>
+
+        </Grid>
+    </Border>
 </UserControl>

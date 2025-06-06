@@ -4,9 +4,50 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp4.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             xmlns:vm="clr-namespace:WpfApp4.ViewModels"
+             mc:Ignorable="d" >
+    <UserControl.DataContext>
+        <vm:QuizEditViewModel/>
+    </UserControl.DataContext>
+    <Grid Margin="10">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Название" FontWeight="Bold"/>
+
+        <TextBox Grid.Row="1" Text="{Binding Path=Title}" />
+
+        <TextBlock Grid.Row="2" Text="Вопросы" FontWeight="Bold" Margin="0,5"/>
+
+        <ItemsControl Grid.Row="3" ItemsSource="{Binding Path=QuestionControls}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Template>
+                <ControlTemplate TargetType="ItemsControl">
+                    <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto">
+                        <ItemsPresenter />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+        </ItemsControl>
+
+        <WrapPanel Grid.Row="4">
+
+            <Button Content="Выбрать вопросы"
+                    Command="{Binding Path=SelectQuestions}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Padding="10,5"/>
+
+        </WrapPanel>
+        
     </Grid>
 </UserControl>

@@ -85,7 +85,7 @@ namespace WpfApp4.ViewModels
                 lac.Add(ac);
             }
             vm.Answers = lac;
-            MainViewModel.Instance.ActiveControl = qc;
+            MainViewModel.Instance.SetActiveControl(qc);
         });
         #endregion
 

@@ -26,7 +26,7 @@ namespace WpfApp4.ViewModels
                     var qc = new QuestionControl();
                     var vm = (QuestionViewModel)qc.DataContext;
                     vm.Question = q;
-                    vm.Deleted += QuestionDeleted;
+                    vm.Deleted += OnDeleted;
                     return qc;
                 })
                 .ToList());
@@ -40,18 +40,18 @@ namespace WpfApp4.ViewModels
         public ICommand GoQuestionEditCommand => _goQuestionEdit ??= new RelayCommand(p =>
         {
             QuestionEditControl questionEditControl = new();
-            ((QuestionEditViewModel)questionEditControl.DataContext).Saved += QuestionsUpdate;
-            MainViewModel.Instance.ActiveControl = questionEditControl;
+            ((QuestionEditViewModel)questionEditControl.DataContext).Saved += OnUpdated;
+            MainViewModel.Instance.SetActiveControl(questionEditControl);
         });
         #endregion
 
         #region Methods
-        private void QuestionsUpdate()
+        private void OnUpdated()
         {
-            MainViewModel.Instance.ActiveControl = new QuestionListControl();
+            MainViewModel.Instance.SetActiveControl(new QuestionListControl());
         }
 
-        private void QuestionDeleted(QuestionControl question)
+        private void OnDeleted(QuestionControl question)
         {
             Questions.Remove(question);
         }
