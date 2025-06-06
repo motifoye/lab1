@@ -19,6 +19,7 @@ namespace WpfApp4.ViewModels
         private string? title;
         private ObservableCollection<QuestionControl> questionControls;
         private ICommand? selectQuestions;
+        private ICommand? saveCommand;
         #endregion
 
         public QuizEditViewModel() 
@@ -53,6 +54,7 @@ namespace WpfApp4.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
         public event Action? QuizAdded;
         public event Action? QuizDeleted;
+        public event Action? QuizSaved;
         #endregion
 
         #region Commands
@@ -75,6 +77,10 @@ namespace WpfApp4.ViewModels
                 MainViewModel.Instance.SetActiveControl(uc);
             };
             MainViewModel.Instance.SetActiveControl(qsc);
+        });
+        public ICommand SaveCommand => saveCommand ??= new RelayCommand(_ =>
+        {
+            QuizSaved?.Invoke();
         });
         #endregion
 

@@ -47,6 +47,10 @@
                     CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
                     Padding="10,5"/>
 
+            <Button Content="Сохранить"
+                    Command="{Binding Path=SaveCommand}"
+                    Padding="10,5"/>
+
         </WrapPanel>
         
     </Grid>
