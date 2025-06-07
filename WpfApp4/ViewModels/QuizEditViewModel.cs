@@ -53,7 +53,6 @@ namespace WpfApp4.ViewModels
 
         #region Events
         public event PropertyChangedEventHandler? PropertyChanged;
-        public event Action? QuizAdded;
         public event Action? QuizDeleted;
         public event Action? QuizSaved;
         #endregion
@@ -73,6 +72,7 @@ namespace WpfApp4.ViewModels
                         var qc = new QuestionControl();
                         var qcvm = (QuestionViewModel)qc.DataContext;
                         qcvm.Question = (Question)i;
+                        qcvm.Deleted += OnDeleted;
                         QuestionControls.Add(qc);
                     }
                 MainViewModel.Instance.SetActiveControl(uc);
@@ -87,6 +87,10 @@ namespace WpfApp4.ViewModels
         #endregion
 
         #region Methods
+        private void OnDeleted(QuestionControl qc)
+        {
+            QuestionControls.Remove(qc);
+        }
         private bool Save()
         {
             if (string.IsNullOrWhiteSpace(Title))

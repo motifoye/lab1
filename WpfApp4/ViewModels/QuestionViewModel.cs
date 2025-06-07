@@ -19,6 +19,7 @@ namespace WpfApp4.ViewModels
         private string _text = "";
         private ICommand? deleteCommand;
         private ICommand? lookCommand;
+        private bool inQuiz;
 
         #region Props
         public Question Question
@@ -47,6 +48,16 @@ namespace WpfApp4.ViewModels
                 OnPropertyChanged(nameof(Text));
             }
         }
+        public bool InQuiz
+        {
+            get => inQuiz;
+            set
+            {
+                if (value == inQuiz) return;
+                inQuiz = value;
+                OnPropertyChanged(nameof(InQuiz));
+            }
+        }
         #endregion
 
         #region Commands
@@ -54,15 +65,6 @@ namespace WpfApp4.ViewModels
         {
             if (obj is not QuestionControl q)
                 return;
-
-            if (Question.Answers != null)
-            {
-                foreach (var a in Question.Answers)
-                {
-                    Data.Answers.Remove(a);
-                }
-            }
-            Data.Questions.Remove(Question);
 
             Deleted?.Invoke(q);
         });

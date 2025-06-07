@@ -52,6 +52,15 @@ namespace WpfApp4.ViewModels
 
         private void OnDeleted(QuestionControl question)
         {
+            var q = (QuestionViewModel)question.DataContext;
+            if (q.Question.Answers != null)
+            {
+                foreach (var a in q.Question.Answers)
+                {
+                    Data.Answers.Remove(a);
+                }
+            }
+            Data.Questions.Remove(q.Question);
             Questions.Remove(question);
         }
         #endregion

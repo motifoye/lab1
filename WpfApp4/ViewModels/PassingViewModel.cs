@@ -52,6 +52,7 @@ namespace WpfApp4.ViewModels
                 quiz = value;
                 OnPropertyChanged(nameof(Quiz));
                 Questions = new(Quiz.Questions);
+                OnPropertyChanged(nameof(IsLastQuestion));
             }
         }
         public ObservableCollection<Question> Questions
