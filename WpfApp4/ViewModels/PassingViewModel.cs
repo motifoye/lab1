@@ -28,11 +28,7 @@ namespace WpfApp4.ViewModels
 
         public PassingViewModel()
         {
-            var q = Data.Quizzes.FirstOrDefault();
-            if (q != null)
-            {
-                Quiz = q;
-            }
+            
         }
 
         #region Props
@@ -40,7 +36,7 @@ namespace WpfApp4.ViewModels
         {
             get
             {
-                ArgumentNullException.ThrowIfNull(quiz, nameof(quiz));
+                //ArgumentNullException.ThrowIfNull(quiz, nameof(quiz));
                 return quiz;
             }
             set
@@ -63,6 +59,7 @@ namespace WpfApp4.ViewModels
                 if (questions == value) return;
                 questions = value;
                 OnPropertyChanged(nameof(Questions));
+                OnPropertyChanged(nameof(CurrentQuestion));
             }
         }
         public int CurrentIndex

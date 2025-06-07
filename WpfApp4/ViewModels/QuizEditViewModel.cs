@@ -53,7 +53,6 @@ namespace WpfApp4.ViewModels
 
         #region Events
         public event PropertyChangedEventHandler? PropertyChanged;
-        public event Action? QuizDeleted;
         public event Action? QuizSaved;
         #endregion
 

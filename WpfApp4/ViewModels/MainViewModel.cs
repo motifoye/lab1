@@ -16,7 +16,6 @@ namespace WpfApp4.ViewModels
         #region Pirvats
         private static MainViewModel? _instance;
         private ContentControl _activeControl;
-        private ICommand? _goHome;
         private ICommand? _goQuestions;
         private ICommand? _goQuizs; 
         #endregion
