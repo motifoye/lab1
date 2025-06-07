@@ -22,7 +22,15 @@ namespace WpfApp4.ViewModels
         
         public QuizListViewModel()
         {
-            controls = [];
+            controls = new([.. Data.Quizzes
+                .Select(q =>
+                {
+                    var qc = new QuizControl();
+                    var vm = (QuizViewModel)qc.DataContext;
+                    vm.Quiz = q;
+                    vm.Deleted += OnDeleted;
+                    return qc;
+                })]);
         }
 
         #region Props
@@ -37,7 +45,7 @@ namespace WpfApp4.ViewModels
         {
             var qec = new QuizEditControl();
             var qevm = (QuizEditViewModel)qec.DataContext;
-            qevm.QuizAdded += OnQuizAdded;
+            qevm.QuizSaved += OnQuizSaved;
             MainViewModel.Instance.SetActiveControl(qec);
         });
 
@@ -48,7 +56,11 @@ namespace WpfApp4.ViewModels
         #endregion
 
         #region Methods
-        private void OnQuizAdded()
+        private void OnDeleted(QuizControl quizControl)
+        {
+            Controls.Remove(quizControl);
+        }
+        private void OnQuizSaved()
         {
             MainViewModel.Instance.SetActiveControl(new QuizListControl());
         }

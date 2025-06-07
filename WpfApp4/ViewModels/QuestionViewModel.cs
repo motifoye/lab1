@@ -92,5 +92,6 @@ namespace WpfApp4.ViewModels
         public event Action<QuestionControl>? Deleted;
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        
     }
 }

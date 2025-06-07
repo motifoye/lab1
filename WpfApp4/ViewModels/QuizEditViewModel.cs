@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WpfApp4.Commands;
@@ -80,11 +81,32 @@ namespace WpfApp4.ViewModels
         });
         public ICommand SaveCommand => saveCommand ??= new RelayCommand(_ =>
         {
-            QuizSaved?.Invoke();
+            if(Save())
+                QuizSaved?.Invoke();
         });
         #endregion
 
         #region Methods
+        private bool Save()
+        {
+            if (string.IsNullOrWhiteSpace(Title))
+            {
+                MessageBox.Show("Введите название викторины.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (QuestionControls.Count < 1)
+            {
+                MessageBox.Show("Должен быть хотя бы один вопрос.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            var qstns = QuestionControls.Select(q => ((QuestionViewModel)q.DataContext).Question).ToList();
+
+            Data.Quizzes.Add(new Quiz() { Title = Title, Questions = qstns, });
+
+            return true;
+        }
         protected void OnPropertyChanged(string name) => 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         #endregion

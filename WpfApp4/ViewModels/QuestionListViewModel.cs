@@ -20,7 +20,7 @@ namespace WpfApp4.ViewModels
 
         public QuestionListViewModel()
         {
-            Questions = new(Data.Questions
+            Questions = new([.. Data.Questions
                 .Select(q =>
                 {
                     var qc = new QuestionControl();
@@ -28,8 +28,7 @@ namespace WpfApp4.ViewModels
                     vm.Question = q;
                     vm.Deleted += OnDeleted;
                     return qc;
-                })
-                .ToList());
+                })]);
         }
 
         #region Properties

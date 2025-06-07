@@ -2,20 +2,20 @@
 {
     public class Quiz
     {
-        private uint id;
-        private static uint lastId = 0;
+        //private uint id;
+        //private static uint lastId = 0;
 
-        public Quiz()
-        {
-            Id = ++lastId;
-        }
+        //public Quiz()
+        //{
+        //    Id = ++lastId;
+        //}
 
-        public uint Id
-        {
-            get => id;
-            private set => id = value;
-        }
+        //public uint Id
+        //{
+        //    get => id;
+        //    private set => id = value;
+        //}
         public string? Title { get; set; }
-        public List<Question> Questions = [];
+        public List<Question> Questions { get; set; } = [];
     }
 }

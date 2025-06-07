@@ -21,7 +21,7 @@
 
         <TextBlock Text="Название" FontWeight="Bold"/>
 
-        <TextBox Grid.Row="1" Text="{Binding Path=Title}" />
+        <TextBox Grid.Row="1" Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock Grid.Row="2" Text="Вопросы" FontWeight="Bold" Margin="0,5"/>
 
