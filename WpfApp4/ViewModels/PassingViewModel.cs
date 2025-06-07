@@ -24,6 +24,7 @@ namespace WpfApp4.ViewModels
         private ICommand? nextQuestionCommand;
         private ICommand? checkCommand;
         private ICommand? endCommand;
+        private Result result = new();
         #endregion
 
         public PassingViewModel()
@@ -107,7 +108,6 @@ namespace WpfApp4.ViewModels
             OnPropertyChanged(nameof(CurrentQuestion));
             OnPropertyChanged(nameof(IsLastQuestion));
             IsChecking = false;
-            Debug.WriteLine($"\n\nNext: {IsLastQuestion}\n\n");
 
         }, (obj) => {
             if (IsLastQuestion)
@@ -118,8 +118,15 @@ namespace WpfApp4.ViewModels
         });
         public ICommand CheckCommand => checkCommand ??= new RelayCommand(_ =>
         {
-            Debug.WriteLine($"\n\nCheck: {IsLastQuestion}\n\n");
             IsChecking = true;
+            if (SelectedAnswer!.IsCorrect)
+            {
+                result.CorrectAnswers++;
+            }
+            else
+            {
+                result.IncorrectAnswers++;
+            }
         }, (obj) => {
             if (SelectedAnswer == null)
                 return false;
@@ -129,7 +136,7 @@ namespace WpfApp4.ViewModels
         });
         public ICommand EndCommand => endCommand ??= new RelayCommand(_ =>
         {
-            MainViewModel.Instance.SetActiveControl(new QuizListControl());
+            MainViewModel.Instance.SetActiveControl(new ResultControl(result));
         }, (obj) => {
             if (!IsLastQuestion)
                 return false;
