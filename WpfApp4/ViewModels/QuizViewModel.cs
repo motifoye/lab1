@@ -20,6 +20,7 @@ namespace WpfApp4.ViewModels
         private string? title;
         private ObservableCollection<Question>? questionList;
         private ICommand? deleteCommand;
+        private ICommand? passCommand;
         #endregion
 
         #region Props
@@ -75,6 +76,12 @@ namespace WpfApp4.ViewModels
             Data.Quizzes.Remove(Quiz);
 
             Deleted?.Invoke(q);
+        });
+        public ICommand PassCommand => passCommand ??= new RelayCommand(_ =>
+        {
+            var pc = new PassingControl();
+            ((PassingViewModel)pc.DataContext).Quiz = Quiz;
+            MainViewModel.Instance.SetActiveControl(pc);
         });
         #endregion
 

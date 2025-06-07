@@ -1,0 +1,145 @@
+﻿<UserControl x:Class="WpfApp4.Controls.PassingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp4.Controls"
+            xmlns:vm="clr-namespace:WpfApp4.ViewModels"
+             mc:Ignorable="d" Width="600" Height="400" >
+    <UserControl.DataContext>
+        <vm:PassingViewModel/>
+    </UserControl.DataContext>
+    
+    <Grid>
+        
+        <Grid Margin="10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" 
+                       Text="{Binding Path=Quiz.Title, Mode=OneWay}"
+                       FontSize="18"
+                       FontWeight="Bold"/>
+
+            <StackPanel Grid.Row="1" Margin="0,10">
+                <TextBlock>
+                    <Run Text="Вопрос №"/>
+                    <Run Text="{Binding Path=CurrentIndex, Mode=OneWay}"/>
+                    <Run Text="из"/>
+                    <Run Text="{Binding Path=Questions.Count, Mode=OneWay}"/>
+                </TextBlock>
+                <TextBlock Text="{Binding Path=CurrentQuestion.Text, Mode=OneWay}" Margin="0,5,0,0"/>
+            </StackPanel>
+
+            <ListBox Grid.Row="2" 
+                     Margin="0,10"
+                     ItemsSource="{Binding Path=CurrentQuestion.Answers, Mode=OneWay}"
+                     SelectedItem="{Binding Path=SelectedAnswer}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Text}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.Style>
+                    <Style TargetType="ListBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsChecking}" Value="True">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.Style>
+            </ListBox>
+            
+            <Button Grid.Row="3"
+                    Content="Проверить"
+                    Padding="5"
+                    Command="{Binding Path=CheckCommand}"/>
+
+            
+
+        </Grid>
+
+        <Border HorizontalAlignment="Center" 
+                VerticalAlignment="Center"
+                CornerRadius="10"
+                >
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Setter Property="Background" Value="#FFFFDEDE"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=SelectedAnswer.IsCorrect}" Value="True">
+                            <Setter Property="Background" Value="#FFD1FBD1"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=IsChecking}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock HorizontalAlignment="Center"
+                           FontSize="16">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="Ваш ответ не верный"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=SelectedAnswer.IsCorrect}" Value="True">
+                                    <Setter Property="Text" Value="Верно"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <Button Grid.Row="1"
+                        Content="Дальше"
+                        Margin="0,10,0,0"
+                        BorderThickness="0"
+                        Padding="10,8"
+                        Command="{Binding Path=NextQuestionCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsLastQuestion}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Grid.Row="2"
+                        Content="Завершить"
+                        Margin="0,10,0,0"
+                        BorderThickness="0"
+                        Padding="10,8"
+                        Command="{Binding Path=EndCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsLastQuestion}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

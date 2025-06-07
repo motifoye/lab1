@@ -29,8 +29,8 @@
 
             <StackPanel Grid.Column="1" Orientation="Horizontal">
 
-                <Button Content="Смотреть" Padding="5"
-                    Command="{Binding LookCommand}"/>
+                <Button Content="Пройти" Padding="5"
+                    Command="{Binding PassCommand}"/>
 
                 <Button Content="❌" Padding="5"
                     Command="{Binding Path=DeleteCommand}"
