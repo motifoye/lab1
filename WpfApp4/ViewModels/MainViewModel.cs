@@ -23,7 +23,7 @@ namespace WpfApp4.ViewModels
 
         private MainViewModel()
         {
-            _activeControl = new MainControl();
+            _activeControl = new QuizListControl();
         }
 
         #region Properties
@@ -43,9 +43,6 @@ namespace WpfApp4.ViewModels
         #endregion
 
         #region Commands
-        public ICommand GoHomeCommand => _goHome ??= 
-            new RelayCommand(_ => SetActiveControl(new MainControl()));
-
         public ICommand GoQuizsCommand => _goQuizs ??= 
             new RelayCommand(_ => SetActiveControl(new QuizListControl()));
 

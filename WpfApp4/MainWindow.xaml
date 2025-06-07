@@ -16,8 +16,6 @@
 
         <!-- Навигационная панель -->
         <StackPanel Background="#EEE" Grid.Column="0">
-            <Button Content="Главная" Margin="5" Padding="5" 
-                    Command="{Binding GoHomeCommand}"/>
             <Button Content="Список викторин" Margin="5" Padding="5" 
                     Command="{Binding GoQuizsCommand}"/>
             <Button Content="Список вопросов" Margin="5" Padding="5" 

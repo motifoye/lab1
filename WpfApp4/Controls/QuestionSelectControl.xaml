@@ -17,7 +17,9 @@
         </Grid.RowDefinitions>
 
         <WrapPanel>
-            <Button Content="Select"
+            <Button Content="Выбрать"
+                    Padding="5"
+                    Margin="5"
                     Command="{Binding Path=SelectCommand}"
                     CommandParameter="{Binding ElementName=QuestionsLB}"/>
         </WrapPanel>
@@ -31,25 +33,6 @@
                     <TextBlock Text="{Binding Path=Text}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            <!--<ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <Border Padding="10,5"
-                                        Margin="2"
-                                        BorderThickness="1"
-                                        BorderBrush="Black">
-                                    <ContentPresenter 
-                                        Content="{TemplateBinding Content}"
-                                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                                        ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>-->
         </ListBox>
     </Grid>
 </UserControl>
