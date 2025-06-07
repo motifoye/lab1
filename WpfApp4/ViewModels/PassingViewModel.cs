@@ -32,11 +32,10 @@ namespace WpfApp4.ViewModels
         }
 
         #region Props
-        public Quiz Quiz
+        public Quiz? Quiz
         {
             get
             {
-                //ArgumentNullException.ThrowIfNull(quiz, nameof(quiz));
                 return quiz;
             }
             set
@@ -47,7 +46,7 @@ namespace WpfApp4.ViewModels
                     return;
                 quiz = value;
                 OnPropertyChanged(nameof(Quiz));
-                Questions = new(Quiz.Questions);
+                Questions = new(Quiz!.Questions);
                 OnPropertyChanged(nameof(IsLastQuestion));
             }
         }
