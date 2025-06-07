@@ -19,7 +19,6 @@ namespace WpfApp4.ViewModels
         private string _text = "";
         private ICommand? deleteCommand;
         private ICommand? lookCommand;
-        private bool inQuiz;
 
         #region Props
         public Question Question
@@ -46,16 +45,6 @@ namespace WpfApp4.ViewModels
                     return;
                 _text = value;
                 OnPropertyChanged(nameof(Text));
-            }
-        }
-        public bool InQuiz
-        {
-            get => inQuiz;
-            set
-            {
-                if (value == inQuiz) return;
-                inQuiz = value;
-                OnPropertyChanged(nameof(InQuiz));
             }
         }
         #endregion
