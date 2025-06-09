@@ -11,7 +11,6 @@ namespace WpfApp4
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = MainViewModel.Instance;
         }
     }
 }

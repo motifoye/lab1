@@ -20,9 +20,12 @@ namespace WpfApp4.ViewModels
         private ICommand? _goQuizs; 
         #endregion
 
-        private MainViewModel()
+        public MainViewModel()
         {
+            if (_instance != null)
+                throw new Exception("Нельзя создать экземпляр повторно");
             _activeControl = new QuizListControl();
+            _instance = this;
         }
 
         #region Properties
